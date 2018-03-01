@@ -1,0 +1,189 @@
+const nbSensors = 4;
+
+node valve
+    state
+        open_level : [0,2] : public; //0 => fermé, 1 => un peu ouvert, 2 => ouvert à fond
+        broken : bool;
+    init 
+        open_level := 0;
+        broken := false;
+    event
+        inc, dec;
+    trans
+        ~broken |- inc -> open_level := open_level + 1;
+        ~broken |- dec -> open_level := open_level - 1;
+        ~broken & open_level = 0 |- dec ->;
+        ~broken & open_level = 2 |- inc ->;
+        ~broken |- inc -> broken := true;
+        ~broken |- dec -> broken := true;
+        broken  |- inc ->;
+        broken  |- dec ->;
+    assert
+        broken = false;
+edon
+
+node tank
+    state 
+        level : [0,nbSensors] : public;
+    init 
+        level := 2;
+    flow
+        amont : [0,4];  //2 valves -> 2*2 = 4
+        aval : [0,2];   //1 valve  -> 1*2 = 2
+    event 
+        time;
+    trans
+        amont > aval |- time -> level := level + 1;
+        amont < aval |- time -> level := level - 1;
+        amont > aval & level = nbSensors |- time -> ;
+        amont < aval & level = 0 |- time -> ;        
+        (amont = aval) & (amont = 0) |- time -> ;
+        (amont = aval) & (amont > 0) |- time -> ;
+        (amont = aval) & (amont > 0) |- time -> level := level + 1;
+        (amont = aval) & (amont > 0) |- time -> level := level - 1;
+edon
+
+node ctrl
+ flow
+  rate : [0, 2][3];
+  level : [0, 4];
+ event
+  nnn;
+  nni;
+  nnd;
+  nin;
+  nii;
+  nid;
+  ndn;
+  ndi;
+  ndd;
+  inn;
+  ini;
+  ind;
+  iin;
+  iii;
+  iid;
+  idn;
+  idi;
+  idd;
+  dnn;
+  dni;
+  dnd;
+  din;
+  dii;
+  did;
+  ddn;
+  ddi;
+  ddd;
+/* Existential transitions */
+/* Universal transitions */
+ trans
+  ((1<=level and level<=3 and 0<=rate[2] and rate[2]<=1 or 2<=level and level<=3 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=2 |- 'ddd' -> ;
+  (2<=level and level<=3 and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or level=2 and rate[1]=2) and rate[0]=2 |- 'ddi' -> ;
+  ((1<=level and level<=3 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=2) and rate[0]=2 |- 'ddn' -> ;
+  ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and 0<=rate[0] and rate[0]<=1 or (1<=level and level<=2 and rate[1]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=1 or (level=1 and rate[2]=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=2 |- 'did' -> ;
+  ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and 1<=rate[1] and rate[1]<=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=2 |- 'dii' -> ;
+  ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'din' -> ;
+  ((1<=level and level<=3 and 0<=rate[2] and rate[2]<=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=1 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or (level=1 and rate[2]=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=2 |- 'dnd' -> ;
+  (2<=level and level<=3 and rate[1]=0 or (level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=2 |- 'dni' -> ;
+  ((1<=level and level<=3 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=1 or (level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=2) and 0<=rate[0] and rate[0]<=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=1 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'dnn' -> ;
+  ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or 1<=level and level<=2 and rate[1]=2) and rate[0]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (level=1 and rate[2]=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=2 |- 'idd' -> ;
+  ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or 1<=level and level<=2 and rate[1]=2) and rate[0]=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=2 |- 'idi' -> ;
+  ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'idn' -> ;
+  (1<=level and level<=2 and rate[1]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=0 or level=1 and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'iid' -> ;
+  ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or (1<=level and level<=2 and rate[1]=0 or level=1 and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or (1<=level and level<=2 and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'iii' -> ;
+  ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or level=1 and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'iin' -> ;
+  ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or level=1 and rate[1]=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'ind' -> ;
+  ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or 1<=level and level<=2 and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or level=1 and rate[1]=2) and rate[0]=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'ini' -> ;
+  ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=1 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=0 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or level=1 and rate[1]=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'inn' -> ;
+  ((1<=level and level<=3 and 0<=rate[2] and rate[2]<=1 or 2<=level and level<=3 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or 1<=level and level<=2 and rate[1]=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (level=1 and rate[2]=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=2 |- 'ndd' -> ;
+  (2<=level and level<=3 and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=0 or ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (level=2 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=2 |- 'ndi' -> ;
+  ((1<=level and level<=3 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'ndn' -> ;
+  ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or (1<=level and level<=2 and rate[1]=0 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nid' -> ;
+  ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or (1<=level and level<=2 and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nii' -> ;
+  ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=0 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and 1<=rate[1] and rate[1]<=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or level=1 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nin' -> ;
+  ((1<=level and level<=3 and 0<=rate[2] and rate[2]<=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=1 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or (level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and rate[1]=2) and rate[0]=1 or ((level=1 and 0<=rate[2] and rate[2]<=1 or 1<=level and level<=2 and rate[2]=2) and 0<=rate[1] and rate[1]<=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nnd' -> ;
+  (2<=level and level<=3 and rate[1]=0 or (level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=0 or ((level=2 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or 1<=level and level<=2 and rate[1]=2) and rate[0]=1 or ((1<=level and level<=2 and rate[2]=0 or level=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or 1<=level and level<=2 and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nni' -> ;
+  ((1<=level and level<=3 and rate[2]=0 or 2<=level and level<=3 and 1<=rate[2] and rate[2]<=2) and rate[1]=0 or (1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=1 or (level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=2) and rate[0]=0 or ((1<=level and level<=2 and rate[2]=0 or level=2 and rate[2]=1 or 2<=level and level<=3 and rate[2]=2) and rate[1]=0 or (1<=level and level<=2 and 0<=rate[2] and rate[2]<=1 or level=2 and rate[2]=2) and rate[1]=1 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=2) and rate[0]=1 or ((level=1 and rate[2]=0 or 1<=level and level<=2 and rate[2]=1 or level=2 and rate[2]=2) and rate[1]=0 or (level=1 and rate[2]=0 or 1<=level and level<=2 and 1<=rate[2] and rate[2]<=2) and rate[1]=1 or level=1 and 1<=rate[2] and rate[2]<=2 and rate[1]=2) and rate[0]=2 |- 'nnn' -> ;
+edon
+
+
+node ctrlV0
+    flow
+        /* observation du controleur 
+        *  Les débits des vannes
+        *  Le niveau dans la cuve
+        */
+        rate : [0,2][3];
+        level : [0, nbSensors];
+    event
+        /* 27 commandes possibles
+        *  codage : "d" pour dec, "i" pour inc, "n" pour nop
+        */
+        ddd, ddi, ddn, did, dii, din, dnd, dni, dnn,
+        idd, idi, idn, iid, iii, iin, ind, ini, inn,
+        ndd, ndi, ndn, nid, nii, nin, nnd, nni, nnn; 
+    trans 
+        true |- ddd, ddi, ddn, did, dii, din, dnd, dni, dnn,
+                idd, idi, idn, iid, iii, iin, ind, ini, inn,
+                ndd, ndi, ndn, nid, nii, nin, nnd, nni, nnn
+            -> ;
+edon
+
+node system
+    sub
+        V : valve[3];
+        T : tank;
+        C : ctrl;
+    assert
+        /* Les canalisations */
+        T.amont = (V[0].open_level + V[1].open_level);
+        T.aval = V[2].open_level;
+        /* L'observation du controleur */
+        C.rate[0]= V[0].open_level;
+        C.rate[1]= V[1].open_level;
+        C.rate[2]= V[2].open_level;
+        C.level = T.level;
+    state
+        ctrl : bool;
+    init
+        ctrl := true;
+    event
+        cmd, env;
+    trans 
+        ctrl |- cmd -> ctrl := ~ctrl;
+        ~ctrl |- env -> ctrl := ~ctrl;
+    sync
+        // evloution de l'environnement
+        <env, T.time>;
+        // les commandes
+
+        <C.nnn, cmd>;
+
+        <cmd, C.inn, V[0].inc>;
+        <cmd, C.dnn, V[0].dec>;
+        <cmd, C.ndn, V[1].dec>;
+        <cmd, C.nin, V[1].inc>;
+        <cmd, C.nnd, V[2].dec>;
+        <cmd, C.nni, V[2].inc>;
+        <cmd, C.ddn, V[0].dec, V[1].dec>;
+        <cmd, C.dnd, V[0].dec, V[2].dec>;
+        <cmd, C.idn, V[0].inc, V[1].dec>;
+        <cmd, C.ind, V[0].inc, V[2].dec>;
+        <cmd, C.din, V[0].dec, V[1].inc>;
+        <cmd, C.dni, V[0].dec, V[2].inc>;
+        <cmd, C.iin, V[0].inc, V[1].inc>;
+        <cmd, C.ini, V[0].inc, V[2].inc>;
+        <cmd, C.ndd, V[1].dec, V[2].dec>;
+        <cmd, C.ndi, V[1].dec, V[2].inc>;
+        <cmd, C.nid, V[1].inc, V[2].dec>;
+        <cmd, C.nii, V[1].inc, V[2].inc>;
+        <cmd, C.ddd, V[0].dec, V[1].dec, V[2].dec>;
+        <cmd, C.ddi, V[0].dec, V[1].dec, V[2].inc>;
+        <cmd, C.did, V[0].dec, V[1].inc, V[2].dec>;
+        <cmd, C.dii, V[0].dec, V[1].inc, V[2].inc>;
+        <cmd, C.idd, V[0].inc, V[1].dec, V[2].dec>;
+        <cmd, C.idi, V[0].inc, V[1].dec, V[2].inc>;
+        <cmd, C.iid, V[0].inc, V[1].inc, V[2].dec>;
+        <cmd, C.iii, V[0].inc, V[1].inc, V[2].inc>;
+edon
