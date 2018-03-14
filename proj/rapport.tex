@@ -60,8 +60,21 @@ Si on fait la somme de ces trois nombres, on tombe sur : $80+84+83 = 247$, qui e
 %\lstinputlisting{Res/System1FCtrl1F2I.res}
 %\lstinputlisting{Res/System1FCtrl1F3I.res}
 %\lstinputlisting{Res/System1FCtrl1F4I.res}
-\paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : contrôleur non optimisé}
+Avec 1 défaillance, on remarque qu'on peut pas contrôler en évitant les situations rédoutées car $SR$ est égale à l'union de $deadlock$ et de $NC$.
+Donc dans notre cas, on a $SR$ qui partage les mêmes états avec $NC$.
+
+Conclusion : le controleur peut contrôler car la variable CtrlCanControl est positive, mais on ne peut pas éviter de tomber dans des situations redoutées.
+
+\paragraph{Interprétation des résultats : contrôleur non optimisé}
+Avec l'optimisation du débit 'aval', on remarque qu'on a moins d'états à gérer donc c'est plus facile pour le contrôleur de controler.
+
+Cependant, on s'apperçoit dorénavant qu'on peut avoir des blocages à cause de la variable $deadlock = 96$, ce qui revient à dire qu'on ne peut pas contrôler sans éviter de tomber dans des situations redoutées car :
+
+$NC$ et $deadlock$ partagent $69$ états et donc on risque d'augmenter les chances de tomber dans des états bloquants.
+
+Conclusion : Malgré le fait qu'on ait optimisé le débit d'aval, on a constaté qu'on ne pourrait pas contrôler sans éviter de tomber dans $SR$ ou dans $deadlock$.
+Aussi, on peut bien voir que $CCoupGagnant$ a beaucoup moins de transitions($2909$).
 
 \subsubsection{Avec 2 défaillances (1 point)}
 \lstinputlisting{Res/System2FCtrl.res}
