@@ -69,8 +69,16 @@ On peut voir que dans ce contrôleur on a un total de 96 états ($any\_s$) et 85
 %\lstinputlisting{Res/System2FCtrl2F2I.res}
 %\lstinputlisting{Res/System2FCtrl2F3I.res}
 %\lstinputlisting{Res/System2FCtrl2F4I.res}
-\paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Ce controlleur peut aussi s'éxécuter en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutés.
+Ici, $SR = 551$. On a donc beaucoup d'états dans lesquels on ne souhaite pas aller. Ceci est dû au fait qu'on peut avoir deux valves défaillantes.
+Si une d'entre elle est celle de la sortie, on ne peut alors plus vider l'eau de la cuve et on atteint facilement les situations redoutées.
+
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
+
+Lorsqu'on optimise le débit aval, on diminue le nombre de situations redoutées. Elle passent de 551 à 239. Cependant, on peut bloquer le système
+car $deadlock = 239$. On peut noter que tous les niveaux critiques sont des situations où l'on se bloque, sinon on aurait $SR > deadlock$ (par l'absurde, si il existe un état dans $NC$ différent de tous ceux de $deadlock$ alors, $|NC \cup deadlock| > |deadlock|$)
+
 
 \subsubsection{Avec 3 défaillances (1 point)}
 \lstinputlisting{Res/System3FCtrl.res}
