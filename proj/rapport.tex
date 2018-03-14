@@ -45,14 +45,14 @@ $nbFailures >= (V[0].fail + V[1].fail + V[2].fail)$ correspond au fait que le no
 %\lstinputlisting{Res/System0FCtrl0F2I.res}
 %\lstinputlisting{Res/System0FCtrl0F3I.res}
 %\lstinputlisting{Res/System0FCtrl0F4I.res}
-\paragraph{Interprétation des résultats : contrôleur non optimisé}
-Comme on peut le voir, $deadlock = 0$ indique que le système ne peut pas se retrouver dans un état bloquant.
-Le nombre d'états qui correspondent à un niveau critique est $NC = 86$.
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Le controlleur peut controller en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutés,
+car on peut voir que $SR = 86$, ce qui indique qu'il y a 86 états dans lesquels le controlleurs se trouvera dans une situation redoutée.
 
-Sur l'ensemble des états, il y en à $80$ où l'eau ne sécoule pas ($out0$), $83$ où l'eau s'écoule un peu ($out1$) et 84 où l'eau s'écoule au maximum ($out2$).
-Si on fait la somme de ces trois nombres, on tombe sur : $80+84+83 = 247$, qui est bien le nombre total d'états.
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 
-\paragraph{Interprétation des résultats : contrôleur optimisé}
+Lorsqu'on optimise le débit aval, il est possible de contrôller en évitant tout blocages ou toute situation critique. En effet, la variable $SR = 0$.
+On peut voir que dans ce contrôleur on a un total de 96 états ($any\_s$) et 858 transitions ($any\_t$). On peut aussi voir, via $CtrlCanControl$, qu'il y a 27 transisitions possibles différentes à partir de l'état initial du contrôleur.
 
 \subsubsection{Avec 1 défaillance (1 point)}
 \lstinputlisting{Res/System1FCtrl.res}
