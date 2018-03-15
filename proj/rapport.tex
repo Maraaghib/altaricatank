@@ -113,7 +113,12 @@ Environ un état sur deux sont des états bloquants dans ce système. Il parait 
 % A COMPLETER en analysant les contrôleurs optimisés obtenus.
 
 \section{Rôle des composants {\tt ValveVirtual} et {\tt CtrlVV} (4 points)}
-% A COMPLETER en expliquant le mécanisme mis en oeuvre et son rôle.
+\paragraph{ValveVirtual : }
+Le noeud ValveVirtual sert à simuler un Valve parfaite. Ainsi, lorsqu'une valve physique tombe en panne, la valve virtuelle prend le relais. Ainsi, le contrôleur peut toujours communiquer avec une valve et savoir quel est le niveau d'ouverture de celle ci.
+
+\paragraph{CtrlVV}
+Le noeud CtrlVV est un contrôleur similaire à Ctrl, à ceci près qu'il utilise des ValveVirtual à la place des variables de flux $rate$.
+Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnement des valves physiques dans le système.
 
 \section{Résultats avec le contrôleur initial {\tt CtrlVV}}
 \subsection{Calcul d'un contrôleur}
