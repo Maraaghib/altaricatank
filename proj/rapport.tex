@@ -111,6 +111,33 @@ Environ un état sur deux sont des états bloquants dans ce système. Il parait 
 % A COMPLETER en expliquant en quoi consiste l'optimisation mise en place.
 
 % A COMPLETER en analysant les contrôleurs optimisés obtenus.
+\subsubsection{Avec 0 défaillances}
+\lstinputlisting{Res/System0FCtrl0F2I_Opt.res}
+\paragraph{Interprétation des résultats : }
+En effet, on constate qu'avec le contrôleur optimisé, on a beaucoup moins d'états à gérer par le contrôleur.
+Avec $0$ défaillance, on n'a ni des états bloquants, ni des situations redoutées. Donc avec cette version, on peut bien contrôler en évitant toute situation redoutée ou blocante.
+
+ce contrôleur a les caractéristiques suivantes :
+
+$49$ états au total, et le contrôleur a 9 transitions à partir de son état initial.
+
+\subsubsection{Avec 1 défaillances}
+\lstinputlisting{Res/System1FCtrl1F3I_Opt.res}
+\paragraph{Interprétation des résultats : }
+Ce contrôleur ne peut pas contrôler en évitant toute situation redoutée ou blocante.
+Par conséquent, le nombre total d'états a augmenté. De plus, $NC$ partage 36 états avec le $deadlock$, donc on a plus de possibilités de tomber dans des états blocants.
+
+\subsubsection{Avec 2 défaillances}
+\lstinputlisting{Res/System2FCtrl2F4I_Opt.res}
+\paragraph{Interprétation des résultats :}
+Pour ce qui concercne un contrôleur avec $2$ défaillance, on observe qu'on a la même situation(le contrôleur ne peut pas controller en évitant les blocages et les niveaux critiques) qu'on avait eu avec un $1$ défaillance.
+Toutfois, si on compare les résultats avec la version non optimisée, on observe qu'on a mois d'états à gérer, en plus les débit d'aval de $out0$, $out1$ et $out2$ sont bien optimisés.
+
+Conclusion : on ne peut pas contrôler sans éviter de tomber dans des états blocants ou dans des situations redoutées même avec l'optimisation.
+
+\subsubsection{Avec 3 défaillances}
+\lstinputlisting{Res/System3FCtrl3F3I_Opt.res}
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 
 \section{Rôle des composants {\tt ValveVirtual} et {\tt CtrlVV} (4 points)}
 \paragraph{ValveVirtual : }
