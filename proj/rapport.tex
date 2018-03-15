@@ -60,13 +60,13 @@ On peut voir que dans ce contrôleur on a un total de 96 états ($any\_s$) et 85
 %\lstinputlisting{Res/System1FCtrl1F2I.res}
 %\lstinputlisting{Res/System1FCtrl1F3I.res}
 %\lstinputlisting{Res/System1FCtrl1F4I.res}
-\paragraph{Interprétation des résultats : contrôleur non optimisé}
+\paragraph{Interprétation des résultats : contrôleur sans débit optimisé}
 Avec 1 défaillance, on remarque qu'on peut pas contrôler en évitant les situations rédoutées car $SR$ est égale à l'union de $deadlock$ et de $NC$.
 Donc dans notre cas, on a $SR$ qui partage les mêmes états avec $NC$.
 
 Conclusion : le controleur peut contrôler car la variable CtrlCanControl est positive, mais on ne peut pas éviter de tomber dans des situations redoutées.
 
-\paragraph{Interprétation des résultats : contrôleur non optimisé}
+\paragraph{Interprétation des résultats : contrôleur avec débit optimisé}
 Avec l'optimisation du débit 'aval', on remarque qu'on a moins d'états à gérer donc c'est plus facile pour le contrôleur de controler.
 
 Cependant, on s'apperçoit dorénavant qu'on peut avoir des blocages à cause de la variable $deadlock = 96$, ce qui revient à dire qu'on ne peut pas contrôler sans éviter de tomber dans des situations redoutées car :
@@ -99,8 +99,13 @@ car $deadlock = 239$. On peut noter que tous les niveaux critiques sont des situ
 %\lstinputlisting{Res/System3FCtrl3F2I.res}
 %\lstinputlisting{Res/System3FCtrl3F3I.res}
 %\lstinputlisting{Res/System3FCtrl3F4I.res}
-\paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Dans ce contrôleur, il n'est pas possible de se trouver dans un état bloquant ($deadlock = 0$). Il est néanmoins possible de se trouver dans un des nombreux états qui sont des niveaux critiques.
+Avec $any\_s = 1832$ et $NC=617$, on peut voir que près d'un tier des états sont des situations critiques.
+
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
+A l'inverse du contrôleur sans optimisation de débit, il n'est pas possible de se retrouver dans des situations ou le niveau de l'eau atteint un niveau critique ($NC = 0$), mais il est possible que le systeme se bloque dans un des 112 états qui sont dans $deadlock$.
+Environ un état sur deux sont des états bloquants dans ce système. Il parait donc difficile de contrôler sans jamais se retouver dans un état appartenant à $deadlock$.
 
 \subsection{Calcul des contrôleurs optimisés (2 points)}
 % A COMPLETER en expliquant en quoi consiste l'optimisation mise en place.
