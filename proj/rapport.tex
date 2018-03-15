@@ -116,9 +116,7 @@ Environ un état sur deux sont des états bloquants dans ce système. Il parait 
 \paragraph{Interprétation des résultats : }
 En effet, on constate qu'avec le contrôleur optimisé, on a beaucoup moins d'états à gérer par le contrôleur.
 Avec $0$ défaillance, on n'a ni des états bloquants, ni des situations redoutées. Donc avec cette version, on peut bien contrôler en évitant toute situation redoutée ou blocante.
-
-ce contrôleur a les caractéristiques suivantes :
-
+Ce contrôleur a les caractéristiques suivantes :
 $49$ états au total, et le contrôleur a 9 transitions à partir de son état initial.
 
 \subsubsection{Avec 1 défaillances}
@@ -202,7 +200,22 @@ Et il a plus de 21 fois moins de transition que la version non optimisée.
 % A COMPLETER
 
 \subsection{Calcul des contrôleurs optimisés (2 points)}
-% A COMPLETER en analysant les contrôleurs optimisés obtenus.
+\subsubsection{Avec 0 défaillances}
+\lstinputlisting{Res/System0FCtrlVV0F2I_Opt.res}
+\paragraph{Interprétation des résultats : }
+
+\subsubsection{Avec 1 défaillances}
+\lstinputlisting{Res/System1FCtrlVV1F4I_Opt.res}
+\paragraph{Interprétation des résultats : }
+
+\subsubsection{Avec 2 défaillances}
+\lstinputlisting{Res/System2FCtrlVV2F3I_Opt.res}
+\paragraph{Interprétation des résultats :}
+
+
+\subsubsection{Avec 3 défaillances}
+\lstinputlisting{Res/System3FCtrlVV3F3I_Opt.res}
+\paragraph{Interprétation des résultats :}
 
 \section{Conclusion (2 points)}
 % A COMPLETER
