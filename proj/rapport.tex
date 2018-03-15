@@ -129,7 +129,11 @@ Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnement de
 %\lstinputlisting{Res/System0FCtrlVV0F3I.res}
 %\lstinputlisting{Res/System0FCtrlVV0F4I.res}
 \paragraph{Interprétation des résultats}
-% A COMPLETER
+
+On peut observer que l'utilisation de valve virtuel n'impacte pas les débits ou le nombre de situations redoutées mais seulement le nombre de transitions possibles sur le cas de 0 défaillance.
+Le fait qu'on ait ici moins de transitions signifie que le système est plus optimisé et plus rapide.
+Dans le cas où les vannes ne sont pas défaillantes, on constate qu’il est possible d’éviter que le système se bloque, ainsi que les situations critiques.
+On peut donc déduire qu’une des caractéristiques de ce contrôleur est qu’il est capable de gérer les pannes.
 
 \subsubsection{Avec 1 défaillance (1 point)}
 \lstinputlisting{Res/System1FCtrlVV.res}
