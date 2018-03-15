@@ -138,7 +138,13 @@ Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnement de
 %\lstinputlisting{Res/System1FCtrlVV1F3I.res}
 %\lstinputlisting{Res/System1FCtrlVV1F4I.res}
 \paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Ce controlleur évite les bloquages, car on a la variable $deadlock = 0$. cependant, il n'est pas possible d'éviter les Niveaux Critiques, qui sont au nombre de 86.
+On peut aussi voir que le contrôleur a 20 transitions partant de son état initial.
+
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
+Dans cette version avec les débits optimisés, on ne peut plus se retrouver dans une situation où le niveau de l'eau est critique. Cependant, il est possible de tomber dans un blocages si on arrive dans l'un des 16 états de $deadlock$.
+dans ce cas, le nombre d'états bloquant est très faible par rapport au nombre d'états total.
 
 \subsubsection{Avec 2 défaillances (1 point)}
 \lstinputlisting{Res/System2FCtrlVV.res}
@@ -147,7 +153,17 @@ Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnement de
 %\lstinputlisting{Res/System2FCtrlVV2F3I.res}
 %\lstinputlisting{Res/System2FCtrlVV2F4I.res}
 \paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Comme dans le cas précédent, il n'est pas possible de se retrouver bloquer car $deadlock=0$, mais il est possible d'arriver dans des états ou le niveau de l'eau est trop haut ou trop bas.
+Ce controlleur a beaucoup d'états (presque 2400) et a sept fois plus de transitions que d'états.
+
+A partir de l'état initial, le controlleur a le choix entre 26 transitions différentes.
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
+Toujours comme dans le cas précédent, dans cette verision avec les débits optimisés, il est possible de tomber dans un $deadlock$ mais il n'est pas possible d'atteindre un niveau critique.
+
+Ce controlleur a beaucoup moins d'état que la version sans optimisation des débits. En effet, il dispose de 274 états, soit près de 9 fois moins que l'autre.
+Et il a plus de 21 fois moins de transition que la version non optimisée.
+
 
 \subsubsection{Avec 3 défaillances (1 point)}
 \lstinputlisting{Res/System3FCtrlVV.res}
