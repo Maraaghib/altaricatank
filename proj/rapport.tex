@@ -24,7 +24,7 @@ Synthèse (assistée) d'un contrôleur du niveau d'une cuve}
 
 \date{}
 
-\author{Nom1 \and Nom2 \and Nom3}
+\author{DEMOULINS Louis \and MASSAMIRI Michel \and SEYE Hamsa}
 
 \maketitle
 
@@ -213,7 +213,17 @@ Et il a plus de 21 fois moins de transition que la version non optimisée.
 %\lstinputlisting{Res/System3FCtrlVV3F3I.res}
 %\lstinputlisting{Res/System3FCtrlVV3F4I.res}
 \paragraph{Interprétation des résultats}
-% A COMPLETER
+\paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
+Ce contrôleur ne permet pas de faire fonctionner le système en assurant qu'il ne tombera pas dans un des niveaux critique d'eau ($NC = 970$).
+On peut cependant assurer qu'il ne sera jamais bloquer, car il n'y a aucun état qui fait partit de $deadlock$ car la variable $deadlock=0$.
+
+
+\paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
+A l'inverse du cas du contrôleur sans les débits optimisé, il est impossible de faire fonctionner le système en assurant qu'il n'y aura pas de blocages car la variable $deadlock = 97$
+il n'y a néanmoins pas de possibilité de se retrouver dans une sitation ou les niveaux de l'eau sont critiques.
+
+De plus on peut observer que cette version du contrôleur à plus de douze fois moins d'états au total que la version non optimisée. Mais étant donné que 97 appartiennent à $deadlock$, on se retrouve avec pres de la moitié des états qui sont blocants.
+Dans la version précédente, seul un état sur trois étaient des situations redoutées. L'optimisation des débits a donc ajouté, proportionnellement aux états, des situations critiques.
 
 \subsection{Calcul des contrôleurs optimisés (2 points)}
 \subsubsection{Avec 0 défaillances}
@@ -232,6 +242,10 @@ Et il a plus de 21 fois moins de transition que la version non optimisée.
 \subsubsection{Avec 3 défaillances}
 \lstinputlisting{Res/System3FCtrlVV3F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
+Ce contrôleur est tout petit (2 états). Il lui est impossible de se retrouver dans une situation redoutée. Cependant, comme le montre les variable $out0=2$, $out1=0$ et $out2=0$, il n'y a pas de circulation d'eau dans le reservoir.
+Il n'effectue donc pas d'action et ne peut par remplir sa tâche de réservoir.
+
+Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelque soit le nombre de défaillances, il ne permet de faire réellement fonctionner le système.
 
 \section{Conclusion (2 points)}
 % A COMPLETER
