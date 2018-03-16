@@ -221,6 +221,11 @@ Et il a plus de 21 fois moins de transition que la version non optimisée.
 \subsubsection{Avec 0 défaillances}
 \lstinputlisting{Res/System0FCtrlVV0F2I_Opt.res}
 \paragraph{Interprétation des résultats : }
+Un contrôleur optimisé avec des valves virtuelles peut contrôler le système avec 0 défaillance, tout en évitant de tomber dans des situations redoutées (niveaux critiques ou états blocants).
+
+Ceci est justifié par le résultat qu'on obtient dans cette version du contrôleur : $SR$, $NC$ et $deadlock$ sont égale $0$. Ainsi, si on regarde les résultats du contrôleur non optimisé de cette version,
+on peut éventuellement se rendre compte, qu'on n'a moins d'états et moins de transitions par rapport à la version non optimisée. Comme $CCoupGagnant$ et $CCoupGagnantUtile$ ont le même nombre de transitions,
+on peut donc déduire qu'on est certain d'avoir des transitions qui partent depuis des états n'ayant pas une situation redoutée, et qui amènent aux états sans situation redoutées.
 
 \subsubsection{Avec 1 défaillances}
 \lstinputlisting{Res/System1FCtrlVV1F4I_Opt.res}
