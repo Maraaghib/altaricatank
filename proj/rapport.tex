@@ -35,7 +35,7 @@ Synthèse (assistée) d'un contrôleur du niveau d'une cuve}
 \section{Rôle de la constante {\tt nbFailures} (2 points)}
 La constante nbFailures est utilisée pour limiter le nombre de configurations atteignables. Elle correspond au nombre de valves qui peuvent être en panne en même temps.
 
-$nbFailures >= (V[0].fail + V[1].fail + V[2].fail)$ correspond au fait que le nombre de valve qui tombent en panne doit toujours être inférieur à la valeur de la constante nbFailure, car cette ligne se trouve dans la section $assert$ du code.
+$nbFailures >= (V[0].fail + V[1].fail + V[2].fail)$ correspond au fait que le nombre de valves qui tombent en panne doit toujours être inférieur à la valeur de la constante nbFailure, car cette ligne se trouve dans la section $assert$ du code.
 
 \section{Résultats avec le contrôleur initial {\tt Ctrl}}
 \subsection{Calcul d'un contrôleur}
@@ -46,12 +46,12 @@ $nbFailures >= (V[0].fail + V[1].fail + V[2].fail)$ correspond au fait que le no
 %\lstinputlisting{Res/System0FCtrl0F3I.res}
 %\lstinputlisting{Res/System0FCtrl0F4I.res}
 \paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
-Le controlleur peut controller en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutés,
-car on peut voir que $SR = 86$, ce qui indique qu'il y a 86 états dans lesquels le controlleurs se trouvera dans une situation redoutée.
+Le contrôleur peut contrôler en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutés,
+car on peut voir que $SR = 86$, ce qui indique qu'il y a $86$ états dans lesquels le contrôleur se trouvera dans une situation redoutée.
 
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 
-Lorsqu'on optimise le débit aval, il est possible de contrôller en évitant tout blocages ou toute situation critique. En effet, la variable $SR = 0$.
+Lorsqu'on optimise le débit aval, il est possible de contrôler en évitant tout blocages ou toute situation critique. En effet, la variable $SR = 0$.
 On peut voir que dans ce contrôleur on a un total de 96 états ($any\_s$) et 858 transitions ($any\_t$). On peut aussi voir, via $CtrlCanControl$, qu'il y a 27 transisitions possibles différentes à partir de l'état initial du contrôleur.
 
 \subsubsection{Avec 1 défaillance (1 point)}
@@ -64,17 +64,17 @@ On peut voir que dans ce contrôleur on a un total de 96 états ($any\_s$) et 85
 Avec 1 défaillance, on remarque qu'on peut pas contrôler en évitant les situations rédoutées car $SR$ est égale à l'union de $deadlock$ et de $NC$.
 Donc dans notre cas, on a $SR$ qui partage les mêmes états avec $NC$.
 
-Conclusion : le controleur peut contrôler car la variable CtrlCanControl est positive, mais on ne peut pas éviter de tomber dans des situations redoutées.
+Conclusion : le controleur peut faire fonctionner le système car la variable $CCoupGagnantUtile$ est positive, mais on ne peut pas éviter de tomber dans des situations redoutées.
 
 \paragraph{Interprétation des résultats : contrôleur avec débit optimisé}
-Avec l'optimisation du débit 'aval', on remarque qu'on a moins d'états à gérer donc c'est plus facile pour le contrôleur de controler.
+Avec l'optimisation du débit 'aval', on remarque qu'on a moins d'états à gérer ce qui rend la tâche du contrôleur plus simple.
 
-Cependant, on s'apperçoit dorénavant qu'on peut avoir des blocages à cause de la variable $deadlock = 96$, ce qui revient à dire qu'on ne peut pas contrôler sans éviter de tomber dans des situations redoutées car :
+Cependant, on s'apperçoit dorénavant qu'on peut avoir des blocages à cause de la variable $deadlock = 94$, ce qui revient à dire qu'on ne peut pas contrôler sans éviter de tomber dans des situations redoutées car :
 
-$NC$ et $deadlock$ partagent $69$ états et donc on risque d'augmenter les chances de tomber dans des états bloquants.
+$NC$ et $deadlock$ partagent $69$ états ce qui augmente les chances de tomber dans des états bloquants.
 
 Conclusion : Malgré le fait qu'on ait optimisé le débit d'aval, on a constaté qu'on ne pourrait pas contrôler sans éviter de tomber dans $SR$ ou dans $deadlock$.
-Aussi, on peut bien voir que $CCoupGagnant$ a beaucoup moins de transitions($2909$).
+Aussi, on peut bien voir que $CCoupGagnant$ a beaucoup moins de transitions($2909$) que la version non optimisée.
 
 \subsubsection{Avec 2 défaillances (1 point)}
 \lstinputlisting{Res/System2FCtrl.res}
@@ -83,7 +83,7 @@ Aussi, on peut bien voir que $CCoupGagnant$ a beaucoup moins de transitions($290
 %\lstinputlisting{Res/System2FCtrl2F3I.res}
 %\lstinputlisting{Res/System2FCtrl2F4I.res}
 \paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
-Ce controlleur peut aussi s'éxécuter en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutés.
+Ce contrôleur peut aussi s'éxécuter en évitant les blocages car $deadlock = 0$. Cependant, il ne peut pas assurer qu'on évitera les situations redoutées.
 Ici, $SR = 551$. On a donc beaucoup d'états dans lesquels on ne souhaite pas aller. Ceci est dû au fait qu'on peut avoir deux valves défaillantes.
 Si une d'entre elle est celle de la sortie, on ne peut alors plus vider l'eau de la cuve et on atteint facilement les situations redoutées.
 
@@ -101,10 +101,11 @@ car $deadlock = 239$. On peut noter que tous les niveaux critiques sont des situ
 %\lstinputlisting{Res/System3FCtrl3F4I.res}
 \paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
 Dans ce contrôleur, il n'est pas possible de se trouver dans un état bloquant ($deadlock = 0$). Il est néanmoins possible de se trouver dans un des nombreux états qui sont des niveaux critiques.
+
 Avec $any\_s = 1832$ et $NC=617$, on peut voir que près d'un tier des états sont des situations critiques.
 
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
-A l'inverse du contrôleur sans optimisation de débit, il n'est pas possible de se retrouver dans des situations ou le niveau de l'eau atteint un niveau critique ($NC = 0$), mais il est possible que le systeme se bloque dans un des 112 états qui sont dans $deadlock$.
+A l'inverse du contrôleur sans optimisation de débit, il n'est pas possible de se retrouver dans des situations où le niveau de l'eau atteint un niveau critique ($NC = 0$), mais il est possible que le systeme se bloque dans un des 112 états qui sont dans $deadlock$.
 Environ un état sur deux sont des états bloquants dans ce système. Il parait donc difficile de contrôler sans jamais se retouver dans un état appartenant à $deadlock$.
 
 \subsection{Calcul des contrôleurs optimisés (2 points)}
@@ -114,44 +115,44 @@ Environ un état sur deux sont des états bloquants dans ce système. Il parait 
 \subsubsection{Avec 0 défaillances}
 \lstinputlisting{Res/System0FCtrl0F2I_Opt.res}
 \paragraph{Interprétation des résultats : }
-En effet, on constate qu'avec le contrôleur optimisé, on a beaucoup moins d'états à gérer par le contrôleur.
-Avec $0$ défaillance, on n'a ni des états bloquants, ni des situations redoutées. Donc avec cette version, on peut bien contrôler en évitant toute situation redoutée ou blocante.
+On constate qu'avec le contrôleur optimisé, on a beaucoup moins d'états à gérer.
+Avec $0$ défaillance, on n'a ni états bloquants, ni situations redoutées. Donc avec cette version, on peut bien faire faire fonctionner en évitant toute situation redoutée ou bloquante.
 Ce contrôleur a les caractéristiques suivantes :
-$49$ états au total, et le contrôleur a 9 transitions à partir de son état initial.
+$49$ états et $220$ transitions au total, et le contrôleur a $9$ transitions à partir de son état initial.
 
 \subsubsection{Avec 1 défaillances}
 \lstinputlisting{Res/System1FCtrl1F3I_Opt.res}
 \paragraph{Interprétation des résultats : }
-Ce contrôleur ne peut pas contrôler en évitant toute situation redoutée ou blocante.
-Par conséquent, le nombre total d'états a augmenté. De plus, $NC$ partage 36 états avec le $deadlock$, donc on a plus de possibilités de tomber dans des états blocants.
+Ce contrôleur ne peut pas contrôler en évitant toute situation redoutée ou bloquante.
+Par conséquent, le nombre total d'états a augmenté. De plus, $NC$ partage 36 états avec le $deadlock$, donc on a plus de possibilités de tomber dans un état bloquant.
 
 \subsubsection{Avec 2 défaillances}
 \lstinputlisting{Res/System2FCtrl2F4I_Opt.res}
 \paragraph{Interprétation des résultats :}
-Pour ce qui concercne un contrôleur avec $2$ défaillance, on observe qu'on a la même situation(le contrôleur ne peut pas controller en évitant les blocages et les niveaux critiques) qu'on avait eu avec un $1$ défaillance.
-Toutfois, si on compare les résultats avec la version non optimisée, on observe qu'on a mois d'états à gérer, en plus les débit d'aval de $out0$, $out1$ et $out2$ sont bien optimisés.
+Pour ce qui concerne le contrôleur avec $2$ défaillances, on observe qu'on a la même situation qu'on avait eu avec un $1$ défaillance (le contrôleur ne peut pas contrôler en évitant les blocages et les niveaux critiques).
+Toutefois, si on compare les résultats avec la version non optimisée, on observe qu'on a moins d'états à gérer, en plus les débits aval de $out0$, $out1$ et $out2$ sont bien optimisés.
 
-Conclusion : on ne peut pas contrôler sans éviter de tomber dans des états blocants ou dans des situations redoutées même avec l'optimisation.
+Conclusion : on ne peut pas contrôler sans éviter de tomber dans des états bloquants ou dans des situations redoutées même avec l'optimisation.
 
 \subsubsection{Avec 3 défaillances}
 \lstinputlisting{Res/System3FCtrl3F3I_Opt.res}
 \paragraph{Interprétation des résultats : }
-Dans cette version, on voit qu'on ne peut jamais tomber dans des niveaux critiques ($NC$ est à 0), donc on ne peut se retrouver que dans des états blocants ($SR$ ne contient que des états blocants).
+Dans cette version, on voit qu'on ne peut jamais tomber dans des niveaux critiques ($NC=0$), donc on ne peut se retrouver que dans des états bloquants ($SR$ ne contient que des états bloquants).
 
-De plus, vu qu'on est dans une situation où les 3 valves tombent en panne(3 défaillances), alors il est complétement logique que notre système de cuve va se bloquer.
-Concernant les propriétés des transitions, on est sûr que cette version de contrôleur peut nous garantir au départ qu'on aura 16 transitions, à partir lesquelles, on peut aller dans états non redoutées ($CtrCanControl$ = "$16$).
-Ainsi que la variable $CCoupGagnantUtile$ nous assure qu'on a $65$ transitions partant depuis des états non $SR$ et qui amènent à des états non $SR$.
+De plus, vu qu'on est dans une situation où les 3 valves tombent en panne(3 défaillances), alors il est complétement logique que notre système de cuve finisse par se bloquer.
+Concernant les propriétés des transitions, on est sûr que cette version de contrôleur peut nous garantir au départ qu'on aura 16 transitions, à partir desquelles, on peut aller dans états non redoutées ($CtrCanControl = 16$).
+Ainsi que la variable $CCoupGagnantUtile$ nous assure qu'on a $65$ transitions partant d'états ne faisant pas partie de $SR$ et qui amènent à des états non inclus dans $SR$.
 \paragraph{Conclusion}
-On peut donc déduire qu'avec les contrôleur optimisés, on obtient moins d'états ainsi que moins de transitions à gérer.
-De ce fait, on peut mieux s'assure que ces versions de contrôleurs, ont moins de risque de tomber dans des situations redoutées.
+On peut donc déduire qu'avec les contrôleurs optimisés, on obtient moins d'états ainsi que moins de transitions à gérer.
+De ce fait, on peut mieux s'assurer que ces versions de contrôleurs ont moins de risque de tomber dans des situations redoutées.
 
 \section{Rôle des composants {\tt ValveVirtual} et {\tt CtrlVV} (4 points)}
 \paragraph{ValveVirtual : }
-Le noeud ValveVirtual sert à simuler un Valve parfaite. Ainsi, lorsqu'une valve physique tombe en panne, la valve virtuelle prend le relais. Ainsi, le contrôleur peut toujours communiquer avec une valve et savoir quel est le niveau d'ouverture de celle ci.
+Le noeud ValveVirtual sert à simuler une Valve parfaite. Ainsi, lorsqu'une valve physique tombe en panne, la valve virtuelle prend le relais. De ce fait, le contrôleur peut toujours communiquer avec une valve et savoir quel est le niveau d'ouverture de celle ci.
 
 \paragraph{CtrlVV}
 Le noeud CtrlVV est un contrôleur similaire à Ctrl, à ceci près qu'il utilise des ValveVirtual à la place des variables de flux $rate$.
-Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnement des valves physiques dans le système.
+Le fait d'utiliser ces ValvesVirtual permet de repérer les disfonctionnements des valves physiques dans le système.
 
 \section{Résultats avec le contrôleur initial {\tt CtrlVV}}
 \subsection{Calcul d'un contrôleur}
@@ -167,9 +168,9 @@ On peut observer que l'utilisation de valve virtuelle n'impacte pas les débits 
 Le fait qu'on ait ici moins de transitions signifie que le système est plus optimisé et plus rapide.
 
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
-Dans le cas où on a un contrôle âvec débit optimisé, on ne plus être dans la situation le niveau de l'eau critique ni être dans une situation redoutée.\
-Ce contrôleur évite les blocages car on ici $deadlock = 0$. Dans le cas où les vannes ne sont pas défaillantes, on constate qu’il est possible d’éviter que le système se bloque, ainsi que les situations critiques.
-On peut donc déduire qu’une des caractéristiques de ce contrôleur est qu’il est capable de gérer les pannes.
+Dans le cas où on a un contrôleur avec débit optimisé, on ne peut plus être dans la situation où le niveau de l'eau est critique ni être dans une situation redoutée.\
+Ce contrôleur évite les blocages car on a ici $deadlock = 0$. Dans le cas où les vannes ne sont pas défaillantes, on constate qu’il est possible d’éviter les situations critiques ou que le système ne se bloque.
+
 
 
 \subsubsection{Avec 1 défaillance (1 point)}
@@ -180,13 +181,13 @@ On peut donc déduire qu’une des caractéristiques de ce contrôleur est qu’
 %\lstinputlisting{Res/System1FCtrlVV1F4I.res}
 \paragraph{Interprétation des résultats}
 \paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
-Ce controlleur évite les blocages, car on a la variable $deadlock = 0$. cependant, il n'est pas possible d'éviter les Niveaux Critiques, qui sont au nombre de 86.
+Ce contrôleur évite les blocages, car on a la variable $deadlock = 0$. cependant, il n'est pas possible d'éviter les Niveaux Critiques, qui sont au nombre de 413.
 On peut aussi voir que le contrôleur a 20 transitions partant de son état initial.
 
 
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 Dans cette version avec les débits optimisés, on ne peut plus se retrouver dans une situation où le niveau de l'eau est critique. Cependant, il est possible de tomber dans un blocage si on arrive dans l'un des 16 états de $deadlock$.
-dans ce cas, le nombre d'états bloquant est très faible par rapport au nombre d'états total.
+Dans ce cas, le nombre d'états bloquants est très faible par rapport au nombre d'états total.
 
 \subsubsection{Avec 2 défaillances (1 point)}
 \lstinputlisting{Res/System2FCtrlVV.res}
@@ -196,14 +197,14 @@ dans ce cas, le nombre d'états bloquant est très faible par rapport au nombre 
 %\lstinputlisting{Res/System2FCtrlVV2F4I.res}
 \paragraph{Interprétation des résultats}
 \paragraph{Interprétation des résultats : Contrôleur sans débit optimisé}
-Comme dans le cas précédent, il n'est pas possible de se retrouver bloquer car $deadlock=0$, mais il est possible d'arriver dans des états ou le niveau de l'eau est trop haut ou trop bas.
-Ce controlleur a beaucoup d'états (presque 2400) et a sept fois plus de transitions que d'états.
+Comme dans le cas précédent, il n'est pas possible de se retrouver bloquer car $deadlock=0$, mais il est possible d'arriver dans des états où le niveau de l'eau est trop haut ou trop bas.
+Ce contrôleur a beaucoup d'états (presque 2400) et a sept fois plus de transitions que d'états.
 
-A partir de l'état initial, le controlleur a le choix entre 26 transitions différentes.
+A partir de l'état initial, le contrôleur a le choix entre 26 transitions différentes.
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 Toujours comme dans le cas précédent, dans cette verision avec les débits optimisés, il est possible de tomber dans un $deadlock$ mais il n'est pas possible d'atteindre un niveau critique.
 
-Ce controlleur a beaucoup moins d'état que la version sans optimisation des débits. En effet, il dispose de 274 états, soit près de 9 fois moins que l'autre.
+Ce contrôleur a beaucoup moins d'état que la version sans optimisation des débits. En effet, il dispose de 274 états, soit près de 9 fois moins que l'autre.
 Et il a plus de 21 fois moins de transition que la version non optimisée.
 
 
@@ -220,26 +221,26 @@ On peut cependant assurer qu'il ne sera jamais bloquer, car il n'y a aucun état
 
 
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
-A l'inverse du cas du contrôleur sans les débits optimisé, il est impossible de faire fonctionner le système en assurant qu'il n'y aura pas de blocages car la variable $deadlock = 97$
-il n'y a néanmoins pas de possibilité de se retrouver dans une sitation ou les niveaux de l'eau sont critiques.
+A l'inverse du cas du contrôleur sans les débits optimisé, il est impossible de faire fonctionner le système en assurant qu'il n'y aura pas de blocages car la variable $deadlock = 97$.
+Il n'y a néanmoins pas de possibilité de se retrouver dans une sitation où les niveaux de l'eau sont critiques.
 
-De plus on peut observer que cette version du contrôleur à plus de douze fois moins d'états au total que la version non optimisée. Mais étant donné que 97 appartiennent à $deadlock$, on se retrouve avec pres de la moitié des états qui sont blocants.
+De plus on peut observer que cette version du contrôleur à plus de douze fois moins d'états au total que la version non optimisée. Mais étant donné que 97 appartiennent à $deadlock$, on se retrouve avec près de la moitié des états qui sont bloquants.
 Dans la version précédente, seul un état sur trois étaient des situations redoutées. L'optimisation des débits a donc ajouté, proportionnellement aux états, des situations critiques.
 
 \subsection{Calcul des contrôleurs optimisés (2 points)}
 \subsubsection{Avec 0 défaillances}
 \lstinputlisting{Res/System0FCtrlVV0F2I_Opt.res}
 \paragraph{Interprétation des résultats : }
-Un contrôleur optimisé avec des valves virtuelles peut contrôler le système avec 0 défaillance, tout en évitant de tomber dans des situations redoutées (niveaux critiques ou états blocants).
+Un contrôleur optimisé avec des valves virtuelles peut contrôler le système avec 0 défaillance, tout en évitant de tomber dans des situations redoutées (niveaux critiques ou états bloquants).
 
-Ceci est justifié par le résultat qu'on obtient dans cette version du contrôleur : $SR$, $NC$ et $deadlock$ sont égale $0$. Ainsi, si on regarde les résultats du contrôleur non optimisé de cette version,
+Ceci est justifié par le résultat qu'on obtient dans cette version du contrôleur : $SR$, $NC$ et $deadlock$ sont égales $0$. Ainsi, si on regarde les résultats du contrôleur non optimisé de cette version,
 on peut éventuellement se rendre compte, qu'on n'a moins d'états et moins de transitions par rapport à la version non optimisée. Comme $CCoupGagnant$ et $CCoupGagnantUtile$ ont le même nombre de transitions,
-on peut donc déduire qu'on est certain d'avoir des transitions qui partent depuis des états n'ayant pas une situation redoutée, et qui amènent aux états sans situation redoutées.
+on est donc certain d'avoir des transitions qui partent depuis des états n'ayant pas une situation redoutée, et qui amènent aux états sans situation redoutées.
 
 \subsubsection{Avec 1 défaillances}
 \lstinputlisting{Res/System1FCtrlVV1F4I_Opt.res}
 \paragraph{Interprétation des résultats : }
-Ce contrôleur optimisé permet de toujours faire son travail en évitant tout blocages, étant donné que $deadlock = 0$ et $NC = 0$ (et donc $SR=0$).
+Ce contrôleur optimisé permet de toujours faire son travail en évitant tout blocage, étant donné que $deadlock = 0$ et $NC = 0$ (et donc $SR=0$).
 
 Il possède 191 états et 580 transitions au total. A partir de son état initial, il a 12 transitions possible.
 La plus grand partie de ses états sont des états ou la valve de sortie est ouverte au niveau 1 sur 2 : $out1 = 96 (96 = 191/2)$.
@@ -248,7 +249,7 @@ La plus grand partie de ses états sont des états ou la valve de sortie est ouv
 \lstinputlisting{Res/System2FCtrlVV2F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
 Ce contrôleur est tout petit (2 états). Il lui est impossible de se retrouver dans une situation redoutée. Cependant, comme le montre les variable $out0=2$, $out1=0$ et $out2=0$, il n'y a pas de circulation d'eau dans le reservoir.
-Il n'effectue donc pas d'action et ne peut par remplir sa tâche de réservoir.
+Il n'effectue donc pas d'action et ne peut pas remplir sa tâche de réservoir.
 
 Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelque soit le nombre de défaillances, il ne permet de faire réellement fonctionner le système.
 
@@ -256,10 +257,14 @@ Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelqu
 \subsubsection{Avec 3 défaillances}
 \lstinputlisting{Res/System3FCtrlVV3F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
-Ce contrôleur est identique à celui qu'avec 2 défaillance, car une fois on a le fait que $out1$ et $out2$ sont égale à $0$, alors le système est bloqué car l'eau ne peut plus sortir de la cuve.
-De plus, on remarque qu'avec 3 défaillances de cette version, l'eau ne rentre pas non plus dans la cuve. Donc le système est bloqué physiquement.
+Ce contrôleur est identique au précédent, car une fois qu'on a le fait que $out1$ et $out2$ sont égaux à $0$, alors le système est bloqué car l'eau ne peut plus sortir de la cuve.
+De plus, on remarque qu'une fois que le système a subbit 3 défaillances, l'eau ne rentre pas non plus dans la cuve. Donc le système est bloqué physiquement.
 
+\pagebreak
 \section{Conclusion (2 points)}
-% A COMPLETER
+Comme on a pu le voir, il y a différentes possibilitées de faire des contrôleurs pour un même système. Ils fonctionneront avec plus ou moins de problème en fonction des optimisations apportées.
+Cependant, si une optimisation permet de réduire la taille du contrôleur, elle n'assure pas qu'il y aura moins de problèmes dans celui ci, comme par exemple le système avec 3 défaillances  $System3FCtrlVV$ qui passe de un état sur trois à un état sur deux qui sont redoutés.
+
+De plus, comme le montre les deux derniers contrôleurs, il est aussi possible que le système ne remplisse pas sa tâche, dans un but préventif (les valves peuvent tomber en panne alors on ne fait rien).
 
 \end{document}
