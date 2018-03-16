@@ -242,15 +242,17 @@ on peut donc déduire qu'on est certain d'avoir des transitions qui partent depu
 \subsubsection{Avec 2 défaillances}
 \lstinputlisting{Res/System2FCtrlVV2F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
+Ce contrôleur est tout petit (2 états). Il lui est impossible de se retrouver dans une situation redoutée. Cependant, comme le montre les variable $out0=2$, $out1=0$ et $out2=0$, il n'y a pas de circulation d'eau dans le reservoir.
+Il n'effectue donc pas d'action et ne peut par remplir sa tâche de réservoir.
+
+Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelque soit le nombre de défaillances, il ne permet de faire réellement fonctionner le système.
 
 
 \subsubsection{Avec 3 défaillances}
 \lstinputlisting{Res/System3FCtrlVV3F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
-Ce contrôleur est tout petit (2 états). Il lui est impossible de se retrouver dans une situation redoutée. Cependant, comme le montre les variable $out0=2$, $out1=0$ et $out2=0$, il n'y a pas de circulation d'eau dans le reservoir.
-Il n'effectue donc pas d'action et ne peut par remplir sa tâche de réservoir.
-
-Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelque soit le nombre de défaillances, il ne permet de faire réellement fonctionner le système.
+Ce contrôleur est identique à celui qu'avec 2 défaillance, car une fois on a le fait que $out1$ et $out2$ sont égale à $0$, alors le système est bloqué car l'eau ne peut plus sortir de la cuve.
+De plus, on remarque qu'avec 3 défaillances de cette version, l'eau ne rentre pas non plus dans la cuve. Donc le système est bloqué physiquement.
 
 \section{Conclusion (2 points)}
 % A COMPLETER
