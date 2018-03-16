@@ -24,7 +24,7 @@ Synthèse (assistée) d'un contrôleur du niveau d'une cuve}
 
 \date{}
 
-\author{Nom1 \and Nom2 \and Nom3}
+\author{DEMOULINS Louis \and MASSAMIRI Michel \and SEYE Hamsa}
 
 \maketitle
 
@@ -244,6 +244,10 @@ Dans la version précédente, seul un état sur trois étaient des situations re
 \subsubsection{Avec 3 défaillances}
 \lstinputlisting{Res/System3FCtrlVV3F3I_Opt.res}
 \paragraph{Interprétation des résultats :}
+Ce contrôleur est tout petit (2 états). Il lui est impossible de se retrouver dans une situation redoutée. Cependant, comme le montre les variable $out0=2$, $out1=0$ et $out2=0$, il n'y a pas de circulation d'eau dans le reservoir.
+Il n'effectue donc pas d'action et ne peut par remplir sa tâche de réservoir.
+
+Ainsi, si ce contrôleur répond complètement aux attentes de sécurité quelque soit le nombre de défaillances, il ne permet de faire réellement fonctionner le système.
 
 \section{Conclusion (2 points)}
 % A COMPLETER
