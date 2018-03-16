@@ -183,6 +183,7 @@ On peut donc déduire qu’une des caractéristiques de ce contrôleur est qu’
 Ce controlleur évite les blocages, car on a la variable $deadlock = 0$. cependant, il n'est pas possible d'éviter les Niveaux Critiques, qui sont au nombre de 86.
 On peut aussi voir que le contrôleur a 20 transitions partant de son état initial.
 
+
 \paragraph{Interprétation des résultats : Contrôleur avec débit optimisé}
 Dans cette version avec les débits optimisés, on ne peut plus se retrouver dans une situation où le niveau de l'eau est critique. Cependant, il est possible de tomber dans un blocage si on arrive dans l'un des 16 états de $deadlock$.
 dans ce cas, le nombre d'états bloquant est très faible par rapport au nombre d'états total.
@@ -238,6 +239,10 @@ on peut donc déduire qu'on est certain d'avoir des transitions qui partent depu
 \subsubsection{Avec 1 défaillances}
 \lstinputlisting{Res/System1FCtrlVV1F4I_Opt.res}
 \paragraph{Interprétation des résultats : }
+Ce contrôleur optimisé permet de toujours faire son travail en évitant tout blocages, étant donné que $deadlock = 0$ et $NC = 0$ (et donc $SR=0$).
+
+Il possède 191 états et 580 transitions au total. A partir de son état initial, il a 12 transitions possible.
+La plus grand partie de ses états sont des états ou la valve de sortie est ouverte au niveau 1 sur 2 : $out1 = 96 (96 = 191/2)$.
 
 \subsubsection{Avec 2 défaillances}
 \lstinputlisting{Res/System2FCtrlVV2F3I_Opt.res}
